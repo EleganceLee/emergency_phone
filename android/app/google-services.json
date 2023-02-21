@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "674193039753",
+    "project_id": "flutter-emergency-phone",
+    "storage_bucket": "flutter-emergency-phone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674193039753:android:e04acec6ca061e307d0158",
+        "android_client_info": {
+          "package_name": "com.example.emergency_phone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "674193039753-3i6bhdmhpvs64208sn6v24guppj2fooo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1tXmE5FL__TvhfkHB0R_YyVX2sf204qo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "674193039753-3i6bhdmhpvs64208sn6v24guppj2fooo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
