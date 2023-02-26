@@ -1,5 +1,6 @@
 import 'package:emergency_phone/common.dart';
 import 'package:emergency_phone/controllers/home_controller.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -62,12 +63,36 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "เกิดอะไรขึ้นกับคุณ",
-          style: TextStyle(color: AppColor.violet),
+        // centerTitle: true,
+        title: Row(
+          children: [
+            if (FirebaseAuth.instance.currentUser != null)
+              FutureBuilder(
+                future: Future.delayed(const Duration(seconds: 2)),
+                builder: (context, snapshot) => Text(
+                  "${FirebaseAuth.instance.currentUser!.displayName ?? ""}",
+                  style: TextStyle(color: AppColor.violet),
+                ),
+              ),
+            const SizedBox(width: 10),
+            Text(
+              "เกิดอะไรขึ้นกับคุณ",
+              style: TextStyle(color: AppColor.violet),
+            ),
+          ],
         ),
         backgroundColor: Colors.white,
+        actions: [
+          TextButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+            child: Text(
+              "Logout",
+              style: TextStyle(color: AppColor.violet),
+            ),
+          )
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ElevatedButton(

@@ -11,7 +11,7 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
-  final items = const [
+  final List<String> items = const [
     "conid-19",
     "การแพทย์",
     "เหตุด่วน เหตุร้าย",
@@ -51,7 +51,7 @@ class _EditPageState extends State<EditPage> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: items.length,
+                itemCount: items.length, //จำนวน
                 itemBuilder: (context, i) => Align(
                   alignment: Alignment.center,
                   child: Card(

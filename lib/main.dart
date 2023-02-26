@@ -1,3 +1,5 @@
+import 'package:emergency_phone/auth_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:emergency_phone/common.dart';
@@ -27,79 +29,15 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.kanit().fontFamily,
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
-    );
-  }
-}
-
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Login",
-                style: TextStyle(
-                  fontSize: 24,
-                  color: AppColor.violet,
-                ),
-              ),
-              const SizedBox(height: 30),
-              TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    filled: true,
-                    hintStyle: TextStyle(color: Colors.grey[800]),
-                    hintText: "Email",
-                    fillColor: Colors.white70),
-              ),
-              const SizedBox(height: 30),
-              TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    filled: true,
-                    hintStyle: TextStyle(color: Colors.grey[800]),
-                    hintText: "Password",
-                    fillColor: Colors.white70),
-              ),
-              const SizedBox(height: 30),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  fixedSize: Size(Get.width * 0.9, 50),
-                  backgroundColor: AppColor.violet,
-                ),
-                onPressed: () {
-                  Get.offAll(
-                    () => const HomePage(),
-                    duration: const Duration(seconds: 1),
-                    transition: Transition.fade,
-                  );
-                },
-                child: const Text(
-                  "LOGIN",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      home: StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return const HomePage();
+            } else {
+              return const AuthPage();
+            }
+          }),
     );
   }
 }
