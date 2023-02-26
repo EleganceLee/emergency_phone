@@ -1,5 +1,7 @@
 import 'package:emergency_phone/common.dart';
+import 'package:emergency_phone/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class PhonePage extends StatefulWidget {
   const PhonePage({super.key});
@@ -9,22 +11,12 @@ class PhonePage extends StatefulWidget {
 }
 
 class _PhonePageState extends State<PhonePage> {
-  final List<String> items = [
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-  ];
+  @override
+  void initState() {
+    homeController.getPhones();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +31,7 @@ class _PhonePageState extends State<PhonePage> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 40),
+            padding: const EdgeInsets.symmetric(vertical: 40),
             child: Center(
               child: Text(
                 "หมายเลขที่เกี่ยวข้องกับ\nCOVID-19",
@@ -61,22 +53,31 @@ class _PhonePageState extends State<PhonePage> {
                   color: Colors.black38,
                 ),
               ),
-              child: ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Row(
-                      children: [
-                        Icon(
-                          Icons.phone,
-                          color: AppColor.violet,
+              child: Obx(
+                () => homeController.phoneItems.isNotEmpty
+                    ? RefreshIndicator(
+                        onRefresh: () async {
+                          homeController.getPhones();
+                        },
+                        child: ListView.builder(
+                          itemCount: homeController.phoneItems.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Row(
+                                children: [
+                                  Icon(
+                                    Icons.phone,
+                                    color: AppColor.violet,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(homeController.phoneItems[index]),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                        const SizedBox(width: 10),
-                        Text(items[index]),
-                      ],
-                    ),
-                  );
-                },
+                      )
+                    : const Center(child: CircularProgressIndicator()),
               ),
             ),
           ),

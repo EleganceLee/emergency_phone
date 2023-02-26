@@ -25,13 +25,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ElevatedButton(
-          onPressed: () {
-            // homeController.addUser();
-            // homeController.getUser();
-            homeController.getCategory();
-          },
-          child: Text("Clice")),
+      // floatingActionButton: ElevatedButton(
+      //     onPressed: () {
+      //       // homeController.addUser();
+      //       // homeController.getUser();
+      //       homeController.getCategory();
+      //     },
+      //     child: Text("Clice")),
       body: Obx(
         () => pages[homeController.currentIndex.value],
       ),

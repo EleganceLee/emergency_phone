@@ -2,6 +2,7 @@ import 'package:emergency_phone/common.dart';
 import 'package:emergency_phone/controllers/home_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 
 class AccountPage extends StatefulWidget {
@@ -60,6 +61,12 @@ class _AccountPageState extends State<AccountPage> {
   ];
 
   @override
+  void initState() {
+    homeController.getCategorys();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -106,31 +113,44 @@ class _AccountPageState extends State<AccountPage> {
           style: TextStyle(fontSize: 18),
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 40,
-          ),
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                homeController.currentIndex.value = 1;
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  icons[index],
-                  Text(items[index]),
-                ],
+      body: Obx(() => homeController.categoryItems.isNotEmpty
+          ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  homeController.getCategorys();
+                },
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 40,
+                  ),
+                  itemCount: homeController.categoryItems.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        homeController.currentIndex.value = 1;
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          icons[index],
+                          SizedBox(
+                            height: 40,
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              homeController.categoryItems[index],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
-            );
-          },
-        ),
-      ),
+            )
+          : CircularProgressIndicator()),
     );
   }
 }
