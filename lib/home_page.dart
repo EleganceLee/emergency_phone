@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
       body: Obx(
         () => pages[homeController.currentIndex.value],
       ),
+
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           fixedColor: AppColor.violet,

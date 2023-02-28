@@ -1,4 +1,5 @@
 import 'package:emergency_phone/common.dart';
+import 'package:emergency_phone/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,22 +13,9 @@ class AddPhoneNumberPage extends StatefulWidget {
 }
 
 class _AddPhoneNumberPageState extends State<AddPhoneNumberPage> {
-  final List<String> items = [
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-    "1234-4444",
-  ];
+  final nameController = TextEditingController();
+  final phoneController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +42,19 @@ class _AddPhoneNumberPageState extends State<AddPhoneNumberPage> {
             ),
             const SizedBox(height: 20),
             TextField(
+              controller: nameController,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  filled: true,
+                  hintStyle: TextStyle(color: Colors.grey[800]),
+                  hintText: "ชื่อ",
+                  fillColor: Color.fromARGB(199, 255, 255, 255)),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: phoneController,
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -69,7 +70,9 @@ class _AddPhoneNumberPageState extends State<AddPhoneNumberPage> {
                 fixedSize: Size(Get.width * 0.9, 50),
                 backgroundColor: AppColor.violet,
               ),
-              onPressed: () {},
+              onPressed: () {
+                homeController.addPhone(nameController.text, phoneController.text);
+              },
               child: const Text(
                 "+ Add",
                 style: TextStyle(fontSize: 18),
@@ -77,36 +80,56 @@ class _AddPhoneNumberPageState extends State<AddPhoneNumberPage> {
             ),
             const SizedBox(height: 30),
             Expanded(
-              child: ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (context, i) => Align(
-                  alignment: Alignment.center,
-                  child: Card(
-                    child: SizedBox(
-                      width: Get.width,
-                      child: ListTile(
-                        onTap: () {
-                          Get.to(() => AddPhoneNumberPage(
-                                title: items[i],
-                              ));
-                        },
-                        title: Row(
-                          children: [
-                            Icon(
-                              Icons.phone,
-                              color: AppColor.violet,
+              child: Obx(
+                () {
+                  if (homeController.loadStatus.value == LoadStatus.loading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (homeController.loadStatus.value == LoadStatus.error) {
+                    return const Center(child: Text("Error"));
+                  }
+
+                  if (homeController.loadStatus.value == LoadStatus.success) {
+                    return ListView.builder(
+                      itemCount: homeController.phoneItemFilter.length,
+                      itemBuilder: (context, i) => Align(
+                        alignment: Alignment.center,
+                        child: Card(
+                          child: SizedBox(
+                            width: Get.width,
+                            child: ListTile(
+                              title: Row(
+                                children: [
+                                  Icon(
+                                    Icons.phone,
+                                    color: AppColor.violet,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    homeController.phoneItemFilter[i].name.toString(),
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              subtitle: Text(
+                                "เบอร์โทร : ${homeController.phoneItemFilter[i].phone.toString()}",
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                              trailing: IconButton(
+                                onPressed: () {
+                                  homeController.deletePhone(homeController.phoneItemFilter[i].id);
+                                },
+                                icon: const Icon(Icons.delete),
+                                color: AppColor.red,
+                              ),
                             ),
-                            Text(" ${items[i]}"),
-                          ],
-                        ),
-                        trailing: Icon(
-                          Icons.delete,
-                          color: AppColor.red,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
+                    );
+                  }
+                  return const Center(child: CircularProgressIndicator());
+                },
               ),
             )
           ],

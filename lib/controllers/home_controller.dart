@@ -6,6 +6,12 @@ import 'package:get/get.dart';
 
 final HomeController homeController = Get.put(HomeController());
 
+enum LoadStatus {
+  loading,
+  success,
+  error,
+}
+
 class HomeController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   TextEditingController inputPhone = TextEditingController();
@@ -15,55 +21,85 @@ class HomeController extends GetxController {
 
   var currentIndex = 0.obs;
 
+  var loadStatus = LoadStatus.success.obs;
+
   var categoryItems = <String>[].obs;
-  var phoneItems = <String>[].obs;
+  var phoneItems = <Phone>[].obs;
+  var phoneItemFilter = <Phone>[].obs;
+  var nameFilter = "".obs;
 
-  // Future<void> addUser() {
-  //   // Call the user's CollectionReference to add a new user
-  //   return users
-  //       .add({
-  //         'full_name': "lee", // John Doe
-  //         'company': "lee company", // Stokes and Sons
-  //         'age': 18 // 42
-  //       })
-  //       .then((value) => print("User Added"))
-  //       .catchError((error) => print("Failed to add user: $error"));
-  // }
+  filterByName() {
+    phoneItemFilter.value = phoneItems
+        .where((p) => p.categoryName == nameFilter.value && nameFilter.value != "")
+        .toList();
+    // print(nameFilter.value);
+    // print(phoneItems.value);
+  }
 
-  // Future<void> getUser() {
-  //   return users.get().then((value) => print("test : ${value.docs.length}"));
-  // }
-
-  // Stream<List<Category>> getCategory() {
-  //   return categorys.snapshots().map((event) => event.docs.map((e) {
-  //         print(e.data());
-  //         return Category.fromJson(jsonDecode(
-  //           e.data().toString(),
-  //         ));
-  //       }).toList());
-  // }
   getCategorys() {
+    print("getCategorys");
     categorys.get().then((value) {
       categoryItems.value = value.docs.map((e) => "${e["name"]}").toList();
     });
   }
 
-  getPhones() {
-    phones.where({"id": "ytWshAy7ZmOpTXh7Fwzf"}).get().then((value) {
-          value.docs.forEach((e) {
-            print("${e.data()}");
-          });
-          phoneItems.value = value.docs.map((e) => "${e["name"]} : ${e["phone"]}").toList();
-        });
+  getPhones() async {
+    print("getPhones");
+    await phones.get().then((value) {
+      // print(value.docs[0].data());
+      final dataList = value.docs
+          .map((e) => Phone(
+                id: e.id,
+                categoryName: e["category_name"],
+                name: e["name"],
+                phone: e["phone"],
+              ))
+          .toList();
+      phoneItems.value = dataList;
+      phoneItemFilter.value = dataList;
+    });
+    filterByName();
+  }
+
+  addPhone(String name, String phone) async {
+    loadStatus.value = LoadStatus.loading;
+    final addInfo = await phones.add({
+      "category_name": nameFilter.value,
+      "name": name,
+      "phone": phone,
+    });
+    print("addInfo ${addInfo}");
+    await Future.delayed(const Duration(seconds: 1));
+    getPhones();
+    loadStatus.value = LoadStatus.success;
+  }
+
+  deletePhone(String id) async {
+    loadStatus.value = LoadStatus.loading;
+    print(id);
+    await phones.doc(id).delete();
+    // final delInfo = await phones.doc(id).delete();
+
+    // print("addInfo ${delInfo}");
+    // await Future.delayed(const Duration(seconds: 1));
+    // getPhones();
+
+    await Future.delayed(const Duration(seconds: 1));
+    getPhones();
+    loadStatus.value = LoadStatus.success;
   }
 }
 
-// class Category {
-//   String name;
+class Phone {
+  String id;
+  String categoryName;
+  String name;
+  String phone;
 
-//   Category({required this.name});
-
-//   static Category fromJson(Map<String, String> json) {
-//     return Category(name: json['name'] as String);
-//   }
-// }
+  Phone({
+    required this.id,
+    required this.categoryName,
+    required this.name,
+    required this.phone,
+  });
+}

@@ -26,13 +26,23 @@ class _AuthPageState extends State<AuthPage> {
 
   AuthState authState = AuthState.login;
   bool loading = false;
-  bool showPassword = false;
+  bool showPassword = true;
+
+  @override
+  void initState() {
+    setState(() {
+      emailController.text = "test@test.com";
+      passwordController.text = "aaaaaa";
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
     emailController.dispose();
     nameController.dispose();
     passwordController.dispose();
+
     super.dispose();
   }
 

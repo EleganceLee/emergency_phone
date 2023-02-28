@@ -2,6 +2,7 @@ import 'package:emergency_phone/common.dart';
 import 'package:emergency_phone/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PhonePage extends StatefulWidget {
   const PhonePage({super.key});
@@ -13,8 +14,15 @@ class PhonePage extends StatefulWidget {
 class _PhonePageState extends State<PhonePage> {
   @override
   void initState() {
-    homeController.getPhones();
     super.initState();
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
   }
 
   @override
@@ -54,30 +62,50 @@ class _PhonePageState extends State<PhonePage> {
                 ),
               ),
               child: Obx(
-                () => homeController.phoneItems.isNotEmpty
+                () => homeController.phoneItemFilter.isNotEmpty
                     ? RefreshIndicator(
                         onRefresh: () async {
                           homeController.getPhones();
                         },
                         child: ListView.builder(
-                          itemCount: homeController.phoneItems.length,
+                          itemCount: homeController.phoneItemFilter.length,
                           itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Row(
-                                children: [
-                                  Icon(
-                                    Icons.phone,
-                                    color: AppColor.violet,
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Text(homeController.phoneItems[index]),
-                                ],
+                            return Card(
+                              child: ListTile(
+                                onTap: () {
+                                  _makePhoneCall(
+                                      homeController.phoneItemFilter[index].phone.toString());
+                                },
+                                title: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.phone,
+                                      color: AppColor.violet,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      homeController.phoneItemFilter[index].name.toString(),
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                                trailing: Text(
+                                  homeController.phoneItemFilter[index].phone.toString(),
+                                  style: const TextStyle(fontSize: 15),
+                                ),
                               ),
                             );
                           },
                         ),
                       )
-                    : const Center(child: CircularProgressIndicator()),
+                    : InkWell(
+                        onTap: () {
+                          homeController.getPhones();
+                        },
+                        child: const Center(
+                          child: Text("ไม่มีข้อมูล"),
+                        ),
+                      ),
               ),
             ),
           ),

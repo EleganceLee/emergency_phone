@@ -1,5 +1,6 @@
 import 'package:emergency_phone/add_phone_number.dart';
 import 'package:emergency_phone/common.dart';
+import 'package:emergency_phone/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,22 +12,6 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
-  final List<String> items = const [
-    "conid-19",
-    "การแพทย์",
-    "เหตุด่วน เหตุร้าย",
-    "การเดินทาง",
-    "ไฟฟ้าประปา",
-    "ธนาคาร",
-    "เครือข่ายมือถือ",
-    "อื่นๆ",
-    "อื่นๆ",
-    "อื่นๆ",
-    "อื่นๆ",
-    "อื่นๆ",
-    "อื่นๆ",
-    "อื่นๆ",
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,23 +35,27 @@ class _EditPageState extends State<EditPage> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: items.length, //จำนวน
-                itemBuilder: (context, i) => Align(
-                  alignment: Alignment.center,
-                  child: Card(
-                    child: SizedBox(
-                      width: Get.width,
-                      child: ListTile(
-                        onTap: () {
-                          Get.to(() => AddPhoneNumberPage(
-                                title: items[i],
-                              ));
-                        },
-                        title: Text("แก้ไขข้อมูล ${items[i]}"),
-                        trailing: Icon(
-                          Icons.edit,
-                          color: AppColor.violet,
+              child: Obx(
+                () => ListView.builder(
+                  itemCount: homeController.categoryItems.length, //จำนวน
+                  itemBuilder: (context, i) => Align(
+                    alignment: Alignment.center,
+                    child: Card(
+                      child: SizedBox(
+                        width: Get.width,
+                        child: ListTile(
+                          onTap: () {
+                            homeController.nameFilter.value = homeController.categoryItems[i];
+                            homeController.filterByName();
+                            Get.to(() => AddPhoneNumberPage(
+                                  title: homeController.categoryItems[i],
+                                ));
+                          },
+                          title: Text("แก้ไขข้อมูล ${homeController.categoryItems[i]}"),
+                          trailing: Icon(
+                            Icons.edit,
+                            color: AppColor.violet,
+                          ),
                         ),
                       ),
                     ),

@@ -3,7 +3,7 @@ import 'package:emergency_phone/controllers/home_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -13,15 +13,6 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  final items = const [
-    "conid-19",
-    "การแพทย์",
-    "เหตุด่วน\nเหตุร้าย",
-    "การเดินทาง",
-    "ไฟฟ้าประปา",
-    "ธนาคาร",
-    "เครือข่ายมือถือ",
-  ];
   final icons = [
     Icon(
       Icons.sentiment_very_dissatisfied_outlined,
@@ -63,7 +54,16 @@ class _AccountPageState extends State<AccountPage> {
   @override
   void initState() {
     homeController.getCategorys();
+    homeController.getPhones();
     super.initState();
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
   }
 
   @override
@@ -107,8 +107,8 @@ class _AccountPageState extends State<AccountPage> {
           fixedSize: Size(Get.width * 0.9, 50),
           backgroundColor: AppColor.violet,
         ),
-        onPressed: () {},
-        child: Text(
+        onPressed: () => _makePhoneCall("1222"),
+        child: const Text(
           "Call",
           style: TextStyle(fontSize: 18),
         ),
@@ -131,6 +131,8 @@ class _AccountPageState extends State<AccountPage> {
                     return InkWell(
                       onTap: () {
                         homeController.currentIndex.value = 1;
+                        homeController.nameFilter.value = homeController.categoryItems[index];
+                        homeController.filterByName();
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,7 +152,7 @@ class _AccountPageState extends State<AccountPage> {
                 ),
               ),
             )
-          : CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator())),
     );
   }
 }
