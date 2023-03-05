@@ -1,5 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:emergency_phone/common.dart';
+import 'package:emergency_phone/controllers/home_controller.dart';
 import 'package:emergency_phone/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   void initState() {
+    homeController.isAdmin.value = false;
     setState(() {
       emailController.text = "test@test.com";
       passwordController.text = "aaaaaa";
@@ -130,19 +132,17 @@ class _AuthPageState extends State<AuthPage> {
                       backgroundColor: AppColor.violet,
                     ),
                     onPressed: () async {
-                      // Get.offAll(
-                      //   () => const HomePage(),
-                      //   duration: const Duration(seconds: 1),
-                      //   transition: Transition.fade,
-                      // );
                       setState(() {
                         loading = true;
                       });
 
-                      // Get.showSnackbar(GetSnackBar(
-                      //   title: "เกิดข้อผิดพลาด",
-                      //   message: "e.toString()",
-                      // ));
+                      if (emailController.text == "admin@admin.com" &&
+                          passwordController.text == "@@admin@@admin@@") {
+                        homeController.isAdmin.value = true;
+                        Get.offAll(HomePage());
+                        return;
+                      }
+
                       try {
                         final result = await FirebaseAuth.instance.signInWithEmailAndPassword(
                           email: emailController.text.trim(),

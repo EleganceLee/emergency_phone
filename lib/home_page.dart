@@ -4,6 +4,7 @@ import 'package:emergency_phone/common.dart';
 import 'package:emergency_phone/controllers/home_controller.dart';
 import 'package:emergency_phone/edit_page.dart';
 import 'package:emergency_phone/phone_page.dart';
+import 'package:emergency_phone/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
@@ -15,62 +16,94 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Widget> pages = const [
+  final List<Widget> pagesUser = const [
+    AccountPage(),
+    PhonePage(),
+    CommentPage(),
+    ProfilePage(),
+  ];
+  final List<Widget> pagesAdimn = const [
     AccountPage(),
     PhonePage(),
     CommentPage(),
     EditPage(),
   ];
 
+  final navsUser = [
+    BottomNavigationBarItem(
+      label: "Home",
+      icon: Icon(
+        Icons.home,
+        color: AppColor.violet,
+      ),
+    ),
+    BottomNavigationBarItem(
+      label: "Phone",
+      icon: Icon(
+        Icons.phone,
+        color: AppColor.violet,
+      ),
+    ),
+    BottomNavigationBarItem(
+      label: "Comment",
+      icon: Icon(
+        Icons.comment,
+        color: AppColor.violet,
+      ),
+    ),
+    BottomNavigationBarItem(
+      label: "Profile",
+      icon: Icon(
+        Icons.person,
+        color: AppColor.violet,
+      ),
+    ),
+  ];
+  final navsAdmin = [
+    BottomNavigationBarItem(
+      label: "Home",
+      icon: Icon(
+        Icons.home,
+        color: AppColor.violet,
+      ),
+    ),
+    BottomNavigationBarItem(
+      label: "Phone",
+      icon: Icon(
+        Icons.phone,
+        color: AppColor.violet,
+      ),
+    ),
+    BottomNavigationBarItem(
+      label: "Comment",
+      icon: Icon(
+        Icons.comment,
+        color: AppColor.violet,
+      ),
+    ),
+    BottomNavigationBarItem(
+      label: "Edit",
+      icon: Icon(
+        Icons.edit,
+        color: AppColor.violet,
+      ),
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: ElevatedButton(
-      //     onPressed: () {
-      //       // homeController.addUser();
-      //       // homeController.getUser();
-      //       homeController.getCategory();
-      //     },
-      //     child: Text("Clice")),
       body: Obx(
-        () => pages[homeController.currentIndex.value],
+        () => homeController.isAdmin.value
+            ? pagesAdimn[homeController.currentIndex.value]
+            : pagesUser[homeController.currentIndex.value],
       ),
-
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           fixedColor: AppColor.violet,
           currentIndex: homeController.currentIndex.value,
           onTap: (index) => homeController.currentIndex.value = index,
-          items: [
-            BottomNavigationBarItem(
-              label: "Home",
-              icon: Icon(
-                Icons.home,
-                color: AppColor.violet,
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: "Phone",
-              icon: Icon(
-                Icons.phone,
-                color: AppColor.violet,
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: "Comment",
-              icon: Icon(
-                Icons.comment,
-                color: AppColor.violet,
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: "Edit",
-              icon: Icon(
-                Icons.edit,
-                color: AppColor.violet,
-              ),
-            ),
-          ],
+          items: homeController.isAdmin.value ? navsAdmin : navsUser,
         ),
       ),
     );

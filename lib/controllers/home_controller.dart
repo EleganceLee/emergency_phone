@@ -13,6 +13,10 @@ enum LoadStatus {
 }
 
 class HomeController extends GetxController {
+  var isAdmin = false.obs;
+
+  // HomeController get to => Get.find();
+
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   TextEditingController inputPhone = TextEditingController();
 

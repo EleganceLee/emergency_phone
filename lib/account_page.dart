@@ -1,3 +1,4 @@
+import 'package:emergency_phone/auth_page.dart';
 import 'package:emergency_phone/common.dart';
 import 'package:emergency_phone/controllers/home_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -71,27 +72,37 @@ class _AccountPageState extends State<AccountPage> {
     return Scaffold(
       appBar: AppBar(
         // centerTitle: true,
-        title: Row(
-          children: [
-            if (FirebaseAuth.instance.currentUser != null)
-              FutureBuilder(
-                future: Future.delayed(const Duration(seconds: 2)),
-                builder: (context, snapshot) => Text(
-                  "${FirebaseAuth.instance.currentUser!.displayName ?? ""}",
-                  style: TextStyle(color: AppColor.violet),
-                ),
+        title: homeController.isAdmin.value
+            ? Text(
+                "สวัสดี Admin",
+                style: TextStyle(color: AppColor.violet),
+              )
+            : Row(
+                children: [
+                  if (FirebaseAuth.instance.currentUser != null)
+                    FutureBuilder(
+                      future: Future.delayed(const Duration(seconds: 2)),
+                      builder: (context, snapshot) => Text(
+                        "${FirebaseAuth.instance.currentUser!.displayName ?? ""}",
+                        style: TextStyle(color: AppColor.violet),
+                      ),
+                    ),
+                  const SizedBox(width: 10),
+                  Text(
+                    "เกิดอะไรขึ้นกับคุณ",
+                    style: TextStyle(color: AppColor.violet),
+                  ),
+                ],
               ),
-            const SizedBox(width: 10),
-            Text(
-              "เกิดอะไรขึ้นกับคุณ",
-              style: TextStyle(color: AppColor.violet),
-            ),
-          ],
-        ),
         backgroundColor: Colors.white,
         actions: [
           TextButton(
             onPressed: () {
+              if (homeController.isAdmin.value == true) {
+                Get.offAll(() => AuthPage());
+                return;
+              }
+
               FirebaseAuth.instance.signOut();
             },
             child: Text(
