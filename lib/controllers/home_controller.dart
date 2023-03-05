@@ -21,7 +21,7 @@ class HomeController extends GetxController {
   TextEditingController inputPhone = TextEditingController();
 
   CollectionReference phones = FirebaseFirestore.instance.collection('phones');
-  CollectionReference categorys = FirebaseFirestore.instance.collection('category_name');
+  CollectionReference categorys = FirebaseFirestore.instance.collection('categorys');
 
   var currentIndex = 0.obs;
 
@@ -48,7 +48,7 @@ class HomeController extends GetxController {
   }
 
   getPhones() async {
-    print("getPhones");
+    // print("getPhones");
     await phones.get().then((value) {
       // print(value.docs[0].data());
       final dataList = value.docs
@@ -72,7 +72,7 @@ class HomeController extends GetxController {
       "name": name,
       "phone": phone,
     });
-    print("addInfo ${addInfo}");
+    // print("addInfo ${addInfo}");
     await Future.delayed(const Duration(seconds: 1));
     getPhones();
     loadStatus.value = LoadStatus.success;
@@ -80,7 +80,7 @@ class HomeController extends GetxController {
 
   deletePhone(String id) async {
     loadStatus.value = LoadStatus.loading;
-    print(id);
+    // print(id);
     await phones.doc(id).delete();
     // final delInfo = await phones.doc(id).delete();
 

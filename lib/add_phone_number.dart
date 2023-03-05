@@ -16,6 +16,7 @@ class _AddPhoneNumberPageState extends State<AddPhoneNumberPage> {
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,8 +72,23 @@ class _AddPhoneNumberPageState extends State<AddPhoneNumberPage> {
                   fillColor: Color.fromARGB(199, 255, 255, 255),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (name) =>
-                    name != null && name.length < 2 ? "เบอร์โทรต้องไม่ต่ำกว่า 2 ตัวอักษร" : null,
+                validator: (name) {
+                  if (name != null && name.length < 2) {
+                    return "เบอร์โทรต้องไม่ต่ำกว่า 2 ตัวอักษร";
+                  }
+
+                  bool isNum = false;
+
+                  try {
+                    int.parse(name!);
+                    isNum = true;
+                  } catch (e) {
+                    isNum = false;
+                    return "กรุณากรอกตัวเลข";
+                  }
+
+                  return null;
+                },
               ),
               const SizedBox(height: 30),
               ElevatedButton(

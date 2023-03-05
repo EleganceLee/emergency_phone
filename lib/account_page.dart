@@ -163,7 +163,7 @@ class _AccountPageState extends State<AccountPage> {
                 ),
               ),
             )
-          : const Center(child: CircularProgressIndicator())),
+          : const Center(child: Text("ไม่มีข้อมูล"))),
     );
   }
 }
