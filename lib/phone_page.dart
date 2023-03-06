@@ -1,5 +1,6 @@
 import 'package:emergency_phone/common.dart';
 import 'package:emergency_phone/controllers/home_controller.dart';
+import 'package:emergency_phone/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';

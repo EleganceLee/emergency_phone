@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emergency_phone/common.dart';
-import 'package:emergency_phone/controllers/home_controller.dart';
+import 'package:emergency_phone/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

@@ -1,8 +1,8 @@
 import 'package:emergency_phone/auth_page.dart';
+import 'package:emergency_phone/controllers/home_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:emergency_phone/common.dart';
 import 'package:emergency_phone/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +17,8 @@ void main() async {
   runApp(const MyApp());
 }
 
+final HomeController homeController = Get.put(HomeController());
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -29,15 +31,17 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.kanit().fontFamily,
         primarySwatch: Colors.blue,
       ),
-      home: StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return const HomePage();
-            } else {
-              return const AuthPage();
-            }
-          }),
+      home: const AuthPage(),
+      // home: StreamBuilder<User?>(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.hasData) {
+      //       return const HomePage();
+      //     } else {
+      //       return const AuthPage();
+      //     }
+      //   },
+      // ),
     );
   }
 }

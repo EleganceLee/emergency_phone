@@ -1,3 +1,4 @@
+import 'package:emergency_phone/auth_page.dart';
 import 'package:emergency_phone/common.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class ProfilePage extends StatelessWidget {
           TextButton(
             onPressed: () {
               FirebaseAuth.instance.signOut();
+              Get.offAll(() => AuthPage());
             },
             child: Text(
               "Logout",
@@ -102,6 +104,7 @@ class ProfilePage extends StatelessWidget {
                   style: OutlinedButton.styleFrom(side: BorderSide(color: AppColor.violet)),
                   onPressed: () {
                     FirebaseAuth.instance.signOut();
+                    Get.offAll(() => AuthPage());
                   },
                   child: Text(
                     "Logout",

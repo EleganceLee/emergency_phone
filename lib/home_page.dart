@@ -3,6 +3,7 @@ import 'package:emergency_phone/comment_page.dart';
 import 'package:emergency_phone/common.dart';
 import 'package:emergency_phone/controllers/home_controller.dart';
 import 'package:emergency_phone/edit_page.dart';
+import 'package:emergency_phone/main.dart';
 import 'package:emergency_phone/phone_page.dart';
 import 'package:emergency_phone/profile_page.dart';
 import 'package:flutter/material.dart';

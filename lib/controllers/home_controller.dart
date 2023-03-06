@@ -4,15 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-final HomeController homeController = Get.put(HomeController());
-
 enum LoadStatus {
   loading,
   success,
   error,
 }
 
-class HomeController extends GetxController {
+class HomeController extends GetxService {
   var isAdmin = false.obs;
 
   // HomeController get to => Get.find();
@@ -80,14 +78,7 @@ class HomeController extends GetxController {
 
   deletePhone(String id) async {
     loadStatus.value = LoadStatus.loading;
-    // print(id);
     await phones.doc(id).delete();
-    // final delInfo = await phones.doc(id).delete();
-
-    // print("addInfo ${delInfo}");
-    // await Future.delayed(const Duration(seconds: 1));
-    // getPhones();
-
     await Future.delayed(const Duration(seconds: 1));
     getPhones();
     loadStatus.value = LoadStatus.success;

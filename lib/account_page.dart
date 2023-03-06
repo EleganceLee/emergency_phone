@@ -1,6 +1,6 @@
 import 'package:emergency_phone/auth_page.dart';
 import 'package:emergency_phone/common.dart';
-import 'package:emergency_phone/controllers/home_controller.dart';
+import 'package:emergency_phone/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,11 +15,12 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   final icons = [
-    Icon(
-      Icons.sentiment_very_dissatisfied_outlined,
-      size: 50,
-      color: AppColor.violet,
-    ),
+    Image.asset("assets/images/images1.png", width: 60),
+    // Icon(
+    //   Icons.access_alarm,
+    //   size: 50,
+    //   color: AppColor.violet,
+    // ),
     Icon(
       Icons.local_hospital_outlined,
       size: 50,
@@ -50,7 +51,19 @@ class _AccountPageState extends State<AccountPage> {
       size: 50,
       color: AppColor.violet,
     ),
+    Icon(
+      Icons.send_to_mobile_outlined,
+      size: 50,
+      color: AppColor.violet,
+    ),
   ];
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    homeController.isAdmin.value = false;
+  }
 
   @override
   void initState() {
@@ -104,6 +117,7 @@ class _AccountPageState extends State<AccountPage> {
               }
 
               FirebaseAuth.instance.signOut();
+              Get.offAll(() => AuthPage());
             },
             child: Text(
               "Logout",
@@ -149,6 +163,7 @@ class _AccountPageState extends State<AccountPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           icons[index],
+                          // Image.asset("assets/images/images1.png", width: 60),
                           SizedBox(
                             height: 40,
                             child: Text(

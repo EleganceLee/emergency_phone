@@ -1,7 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:emergency_phone/common.dart';
-import 'package:emergency_phone/controllers/home_controller.dart';
 import 'package:emergency_phone/home_page.dart';
+import 'package:emergency_phone/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,10 +31,13 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   void initState() {
-    homeController.isAdmin.value = false;
+    // setState(() {
+    //   emailController.text = "test@test.com";
+    //   passwordController.text = "aaaaaa";
+    // });
     setState(() {
-      emailController.text = "test@test.com";
-      passwordController.text = "aaaaaa";
+      emailController.text = "admin@admin.com";
+      passwordController.text = "@@admin@@admin@@";
     });
     super.initState();
   }
@@ -139,7 +142,7 @@ class _AuthPageState extends State<AuthPage> {
                       if (emailController.text == "admin@admin.com" &&
                           passwordController.text == "@@admin@@admin@@") {
                         homeController.isAdmin.value = true;
-                        Get.offAll(HomePage());
+                        Get.offAll(() => HomePage());
                         return;
                       }
 
@@ -148,6 +151,7 @@ class _AuthPageState extends State<AuthPage> {
                           email: emailController.text.trim(),
                           password: passwordController.text.trim(),
                         );
+                        Get.offAll(() => HomePage());
                       } on FirebaseAuthException catch (e) {
                         Get.showSnackbar(GetSnackBar(
                           title: "เกิดข้อผิดพลาด",
