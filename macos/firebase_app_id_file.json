@@ -1,7 +1,7 @@
 {
   "file_generated_by": "FlutterFire CLI",
   "purpose": "FirebaseAppID & ProjectID for this Firebase app in this directory",
-  "GOOGLE_APP_ID": "1:674193039753:ios:d3ce1857d2acc88f7d0158",
-  "FIREBASE_PROJECT_ID": "flutter-emergency-phone",
-  "GCM_SENDER_ID": "674193039753"
+  "GOOGLE_APP_ID": "1:557111722654:ios:9b82505b98c78b76ed718f",
+  "FIREBASE_PROJECT_ID": "emergency-phone-project-2824f",
+  "GCM_SENDER_ID": "557111722654"
 }

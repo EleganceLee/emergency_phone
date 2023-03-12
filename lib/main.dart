@@ -1,18 +1,45 @@
 import 'package:emergency_phone/auth_page.dart';
 import 'package:emergency_phone/controllers/home_controller.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'firebase_options.dart';
-import 'package:emergency_phone/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+  //   alert: true, // Required to display a heads up notification
+  //   badge: true,
+  //   sound: true,
+  // );
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // await FirebaseMessaging.instance.getInitialMessage();
+  // FirebaseMessaging messaging = FirebaseMessaging.instance;
+  // await messaging.subscribeToTopic("myTopic");
+  // await messaging.requestPermission(
+  //   alert: true,
+  //   announcement: true,
+  //   badge: true,
+  //   carPlay: true,
+  //   criticalAlert: true,
+  //   provisional: true,
+  //   sound: true,
+  // );
 
   runApp(const MyApp());
 }
@@ -32,16 +59,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const AuthPage(),
-      // home: StreamBuilder<User?>(
-      //   stream: FirebaseAuth.instance.authStateChanges(),
-      //   builder: (context, snapshot) {
-      //     if (snapshot.hasData) {
-      //       return const HomePage();
-      //     } else {
-      //       return const AuthPage();
-      //     }
-      //   },
-      // ),
     );
   }
 }

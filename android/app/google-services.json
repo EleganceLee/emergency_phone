@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "674193039753",
-    "project_id": "flutter-emergency-phone",
-    "storage_bucket": "flutter-emergency-phone.appspot.com"
+    "project_number": "557111722654",
+    "project_id": "emergency-phone-project-2824f",
+    "storage_bucket": "emergency-phone-project-2824f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:674193039753:android:e04acec6ca061e307d0158",
+        "mobilesdk_app_id": "1:557111722654:android:68c2334265c724bded718f",
         "android_client_info": {
           "package_name": "com.example.emergency_phone"
         }
       },
       "oauth_client": [
         {
-          "client_id": "674193039753-3i6bhdmhpvs64208sn6v24guppj2fooo.apps.googleusercontent.com",
+          "client_id": "557111722654-steva96imc1d64r8i446p7ulo86n31h4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB1tXmE5FL__TvhfkHB0R_YyVX2sf204qo"
+          "current_key": "AIzaSyBhF4G4uY0C3It75wMn-9X8Cqfn1PcTNyw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "674193039753-3i6bhdmhpvs64208sn6v24guppj2fooo.apps.googleusercontent.com",
+              "client_id": "557111722654-steva96imc1d64r8i446p7ulo86n31h4.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "557111722654-2dsddldev9bse8i3qgksikj0642b6r9o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.emergencyPhone"
+              }
             }
           ]
         }

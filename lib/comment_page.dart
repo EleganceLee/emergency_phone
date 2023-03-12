@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emergency_phone/common.dart';
 import 'package:emergency_phone/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:http/http.dart' as http;
 
 class CommentPage extends StatefulWidget {
   const CommentPage({super.key});
@@ -17,6 +22,179 @@ class _CommentPageState extends State<CommentPage> {
   final TextEditingController message = new TextEditingController();
   final fs = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
+  String token = "";
+
+  // void onRequestPermission() async {
+  //   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  //   NotificationSettings setting = await messaging.requestPermission(
+  //     alert: true,
+  //     announcement: true,
+  //     badge: true,
+  //     carPlay: true,
+  //     criticalAlert: true,
+  //     provisional: true,
+  //     sound: true,
+  //   );
+
+  //   if (setting.authorizationStatus == AuthorizationStatus.authorized) {
+  //     print("user  granted permission.");
+  //   } else if (setting.authorizationStatus == AuthorizationStatus.provisional) {
+  //     print("user  granted provisional permission.");
+  //   } else {
+  //     print("user not accepted permission.");
+  //   }
+  // }
+
+  void getToken() async {
+    await FirebaseMessaging.instance.getToken().then((value) {
+      setState(() {
+        token = value ?? "";
+      });
+    });
+  }
+
+  void sendPushMessage() async {
+    var title = "title";
+    var body = "body";
+
+    // try {
+    //   final req = await http.post(
+    //     Uri.parse('https://fcm.googleapis.com/fcm/send'),
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Authorization':
+    //           "key=AAAAgbZyQp4:APA91bEvzt3WFvk-W-LZ7ttKuQH1MhCFreSj5A7KPG5N3kMM8755qBYIy1DBtK_eSiBCF-GZgR4m_3dH1plSnues_zkWI3_A-6p0w1da6odrYPYaqtK8WWqCtjlubcMgsgcAvkEHzcpQ",
+    //     },
+    //     body: jsonEncode(
+    //       {
+    //         'priority': 'high',
+    //         'data': {
+    //           'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+    //           'status': 'done',
+    //           'body': body,
+    //           'title': title,
+    //         },
+    //         "notification": {
+    //           "title": title,
+    //           "body": body,
+    //           "android_channel_id": "emergency_phone",
+    //         },
+    //         "to": token,
+    //       },
+    //     ),
+    //   );
+    try {
+      final req = await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        encoding: Encoding.getByName('utf-8'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization':
+              "key=AAAAgbZyQp4:APA91bEvzt3WFvk-W-LZ7ttKuQH1MhCFreSj5A7KPG5N3kMM8755qBYIy1DBtK_eSiBCF-GZgR4m_3dH1plSnues_zkWI3_A-6p0w1da6odrYPYaqtK8WWqCtjlubcMgsgcAvkEHzcpQ",
+        },
+        body: jsonEncode(
+          {
+            'priority': 'high',
+            'data': {
+              'id': '28',
+              'type': 'Order',
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'status': 'done',
+              // 'body': body,
+              // 'title': title,
+            },
+            "notification": {
+              "title": title,
+              "body": body,
+              // "android_channel_id": "emergency_phone",
+            },
+            "to": "topics/myTopic",
+          },
+        ),
+      );
+
+      debugPrint(req.statusCode.toString());
+      debugPrint(req.body);
+    } catch (e) {
+      debugPrint("http post error : $e");
+    }
+  }
+
+  test() async {
+    BigTextStyleInformation bigText = BigTextStyleInformation(
+      "title test",
+      htmlFormatContent: true,
+      contentTitle: "contentTitle test",
+      htmlFormatContentTitle: true,
+    );
+
+    AndroidNotificationDetails android = AndroidNotificationDetails(
+      "emergency_phone",
+      "emergency_phone",
+      "sdfsd",
+      importance: Importance.high,
+      priority: Priority.high,
+      playSound: true,
+    );
+
+    NotificationDetails platformChannel = NotificationDetails(
+      android: android,
+      iOS: const IOSNotificationDetails(),
+    );
+
+    await FlutterLocalNotificationsPlugin().show(
+      0,
+      "title test",
+      "body test",
+      platformChannel,
+      payload: "body test",
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // await FirebaseMessaging.instance.subscribeToTopic("myTopic");
+    // onRequestPermission();
+
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+    //   print('Got a message whilst in the foreground!');
+    //   print('Message data: ${message.data}');
+
+    //   if (message.notification != null) {
+    //     BigTextStyleInformation bigText = BigTextStyleInformation(
+    //       message.notification!.body.toString(),
+    //       htmlFormatContent: true,
+    //       contentTitle: message.notification!.title.toString(),
+    //       htmlFormatContentTitle: true,
+    //     );
+
+    //     AndroidNotificationDetails android = AndroidNotificationDetails(
+    //       "emergency_phone",
+    //       "emergency_phone",
+    //       "",
+    //       importance: Importance.high,
+    //       priority: Priority.high,
+    //       playSound: true,
+    //     );
+
+    //     NotificationDetails platformChannel = NotificationDetails(
+    //       android: android,
+    //       iOS: const IOSNotificationDetails(),
+    //     );
+
+    //     await FlutterLocalNotificationsPlugin().show(
+    //       0,
+    //       message.notification!.title,
+    //       message.notification!.body,
+    //       platformChannel,
+    //       payload: message.data['body'],
+    //     );
+    //   }
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,16 +234,22 @@ class _CommentPageState extends State<CommentPage> {
                   backgroundColor: AppColor.violet,
                 ),
                 onPressed: () {
-                  if (message.text.isNotEmpty) {
-                    fs.collection('Messages').doc().set({
-                      'message': message.text.trim(),
-                      'time': DateTime.now(),
-                      'email':
-                          homeController.isAdmin.value ? "Admin" : _auth.currentUser?.email ?? "",
-                    });
+                  test();
 
-                    message.clear();
-                  }
+                  // if (message.text.isNotEmpty) {
+                  //   fs.collection('Messages').doc().set({
+                  //     'message': message.text.trim(),
+                  //     'time': DateTime.now(),
+                  //     'email':
+                  //         homeController.isAdmin.value ? "Admin" : _auth.currentUser?.email ?? "",
+                  //   });
+
+                  //   message.clear();
+
+                  //   if (homeController.isAdmin.value) {
+                  //     sendPushMessage();
+                  //   }
+                  // }
                 },
                 child: Text(
                   "ส่ง",

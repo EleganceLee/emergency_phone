@@ -62,6 +62,14 @@ class _AuthPageState extends State<AuthPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.asset(
+                    "assets/icon/icon.png",
+                    width: 160,
+                  ),
+                ),
+                SizedBox(height: 20),
                 Text(
                   authState == AuthState.login ? "Login" : "Register",
                   style: TextStyle(
@@ -151,6 +159,7 @@ class _AuthPageState extends State<AuthPage> {
                           email: emailController.text.trim(),
                           password: passwordController.text.trim(),
                         );
+                        homeController.isAdmin.value = false;
                         Get.offAll(() => HomePage());
                       } on FirebaseAuthException catch (e) {
                         Get.showSnackbar(GetSnackBar(

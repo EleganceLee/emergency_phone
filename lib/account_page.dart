@@ -62,7 +62,6 @@ class _AccountPageState extends State<AccountPage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    homeController.isAdmin.value = false;
   }
 
   @override

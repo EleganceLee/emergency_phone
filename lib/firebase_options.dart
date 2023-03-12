@@ -44,39 +44,40 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDrin7M2uMktSbB9W8AGzo3sYg23_ZIGIg',
-    appId: '1:674193039753:web:25f9401ee10cc98a7d0158',
-    messagingSenderId: '674193039753',
-    projectId: 'flutter-emergency-phone',
-    authDomain: 'flutter-emergency-phone.firebaseapp.com',
-    storageBucket: 'flutter-emergency-phone.appspot.com',
+    apiKey: 'AIzaSyDOIgN_Wbe4097iQ5GWGc5Z0bRpSR_uxqc',
+    appId: '1:557111722654:web:0e486c684d4cdd97ed718f',
+    messagingSenderId: '557111722654',
+    projectId: 'emergency-phone-project-2824f',
+    authDomain: 'emergency-phone-project-2824f.firebaseapp.com',
+    storageBucket: 'emergency-phone-project-2824f.appspot.com',
+    measurementId: 'G-MVGQ51D0WT',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB1tXmE5FL__TvhfkHB0R_YyVX2sf204qo',
-    appId: '1:674193039753:android:e04acec6ca061e307d0158',
-    messagingSenderId: '674193039753',
-    projectId: 'flutter-emergency-phone',
-    storageBucket: 'flutter-emergency-phone.appspot.com',
+    apiKey: 'AIzaSyBhF4G4uY0C3It75wMn-9X8Cqfn1PcTNyw',
+    appId: '1:557111722654:android:68c2334265c724bded718f',
+    messagingSenderId: '557111722654',
+    projectId: 'emergency-phone-project-2824f',
+    storageBucket: 'emergency-phone-project-2824f.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDdZUNEu-brOLujFcYV9s4cZF5ED29VfrM',
-    appId: '1:674193039753:ios:d3ce1857d2acc88f7d0158',
-    messagingSenderId: '674193039753',
-    projectId: 'flutter-emergency-phone',
-    storageBucket: 'flutter-emergency-phone.appspot.com',
-    iosClientId: '674193039753-7g0k3aaab44d53jseivt14so548et16s.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBDOGJuapcHXWpraxN1c_Yqqnk8XaEsthg',
+    appId: '1:557111722654:ios:9b82505b98c78b76ed718f',
+    messagingSenderId: '557111722654',
+    projectId: 'emergency-phone-project-2824f',
+    storageBucket: 'emergency-phone-project-2824f.appspot.com',
+    iosClientId: '557111722654-2dsddldev9bse8i3qgksikj0642b6r9o.apps.googleusercontent.com',
     iosBundleId: 'com.example.emergencyPhone',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDdZUNEu-brOLujFcYV9s4cZF5ED29VfrM',
-    appId: '1:674193039753:ios:d3ce1857d2acc88f7d0158',
-    messagingSenderId: '674193039753',
-    projectId: 'flutter-emergency-phone',
-    storageBucket: 'flutter-emergency-phone.appspot.com',
-    iosClientId: '674193039753-7g0k3aaab44d53jseivt14so548et16s.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBDOGJuapcHXWpraxN1c_Yqqnk8XaEsthg',
+    appId: '1:557111722654:ios:9b82505b98c78b76ed718f',
+    messagingSenderId: '557111722654',
+    projectId: 'emergency-phone-project-2824f',
+    storageBucket: 'emergency-phone-project-2824f.appspot.com',
+    iosClientId: '557111722654-2dsddldev9bse8i3qgksikj0642b6r9o.apps.googleusercontent.com',
     iosBundleId: 'com.example.emergencyPhone',
   );
 }
